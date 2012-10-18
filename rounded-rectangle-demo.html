@@ -7,7 +7,7 @@
     top: 0px;
     left: 0px;
     width: 500px;
-    height: 400px;
+    height: 380px;
     border-radius: 100px;
     background-color: rgb(47,53,64);
 }
@@ -17,17 +17,68 @@
     top: 5px;
     left: 5px;
     width: 490px;
-    height: 390px;
+    height: 370px;
     color: rgb(242,237,248); 
-    -webkit-shape-inside: rectangle(0px, 0px, 600px, 400px, 100px, 100px);
+    -webkit-shape-inside: rectangle(0px, 0px, 490px, 370px, 100px, 100px);
 }
 </style>
 </head>
 
 <body>
-<div style="position: relative; font: 125% geneva;">
+<article>
+  <section><!-- warning placeholder --></section><div style="position: relative; font: 125% geneva;">
   <div id="shape-background"></div>
   <div id="shape-inside">Steve suddenly got more intense. "Rectangles with rounded corners are everywhere! Just look around this room!". And sure enough, there were lots of them, like the whiteboard and some of the desks and tables. Then he pointed out the window. "And look outside, there's even more, practically everywhere you look!". He even persuaded Bill to take a quick walk around the block with him, pointing out every rectangle with rounded corners that he could find. <span style="font-size: smaller">[excerpted from folklore.org: <a style='color: rgb(217,209,199)' href='http://www.folklore.org/StoryView.py?project=Macintosh&story=Round_Rects_Are_Everywhere.txt'>Round Rects Are Everywhere!</a>]</span></div>
 </div>
+</article>
+<script>
+!function(){  
+    
+    function CSSExclusions(){}
+    // basic feature detection 
+    CSSExclusions.prototype.isSupported = (function(prop){
+
+        var el = document.createElement("div"),
+            style = el.style;
+
+        if (!el){
+            return false
+        }
+
+        // intentional bias towards -webkit because the prototype uses 
+        // code under prefixed notation that is still being debated in the W3C
+        style.setProperty("-webkit-shape-inside", "rectangle(0, 0, 100%, 100%)");
+        return (style.getPropertyValue("-webkit-shape-inside") != null);
+    })()    
+
+    var CSSExclusions = new CSSExclusions()
+
+    var checkSupport = function(){
+        if (CSSExclusions.isSupported){
+            return 
+        }
+        else{
+            var target = document.querySelector('article section') 
+
+            if (target){
+                target.innerHTML = createWarning()
+            }
+        }
+    }
+
+    var createWarning = function(){
+        var h = [],
+            p = function(){ h.push.apply(h, arguments) }
+            
+        p('<p class="unsupported error">')
+            p('<strong>Warning:</strong> You need to use the Chrome Canary browser with experimental WebKit features enabled to see this example working correctly. See <a href="../index.html#runs-in">here</a> for more info.')
+        p('</p>')
+
+        return h.join('')
+    }
+
+    document.addEventListener("DOMContentLoaded", checkSupport)
+}()
+</script>
 </body>
 </html>
